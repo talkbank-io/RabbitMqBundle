@@ -228,12 +228,14 @@ class OldSoundRabbitMqExtensionTest extends TestCase
             $definition->getMethodCalls()
         );
     }
+
     public function testFooProducerDefinition()
     {
         $container = $this->getContainer('test.yml');
 
         $this->assertTrue($container->has('old_sound_rabbit_mq.foo_producer_producer'));
         $definition = $container->getDefinition('old_sound_rabbit_mq.foo_producer_producer');
+        $this->assertSame('My\Foo\Producer', $definition->getClass());
         $this->assertEquals((string) $definition->getArgument(0), 'old_sound_rabbit_mq.connection.foo_connection');
         $this->assertEquals((string) $definition->getArgument(1), 'old_sound_rabbit_mq.channel.foo_producer');
         $this->assertEquals(array(
@@ -286,6 +288,7 @@ class OldSoundRabbitMqExtensionTest extends TestCase
 
         $this->assertTrue($container->has('old_sound_rabbit_mq.default_producer_producer'));
         $definition = $container->getDefinition('old_sound_rabbit_mq.default_producer_producer');
+        $this->assertSame('%old_sound_rabbit_mq.producer.class%', $definition->getClass());
         $this->assertEquals((string) $definition->getArgument(0), 'old_sound_rabbit_mq.connection.default');
         $this->assertEquals((string) $definition->getArgument(1), 'old_sound_rabbit_mq.channel.default_producer');
         $this->assertEquals(array(
@@ -319,6 +322,47 @@ class OldSoundRabbitMqExtensionTest extends TestCase
             $definition->getMethodCalls()
         );
         $this->assertEquals('%old_sound_rabbit_mq.producer.class%', $definition->getClass());
+    }
+
+    public function testPublisherConfirmsProducerDefinition()
+    {
+        $container = $this->getContainer('test.yml');
+
+        $this->assertTrue($container->has('old_sound_rabbit_mq.publisher_confirms_producer_producer'));
+        $definition = $container->getDefinition('old_sound_rabbit_mq.publisher_confirms_producer_producer');
+        $this->assertSame('%old_sound_rabbit_mq.publisher_confirms_producer.class%', $definition->getClass());
+        $this->assertEquals((string) $definition->getArgument(0), 'old_sound_rabbit_mq.connection.default');
+        $this->assertEquals((string) $definition->getArgument(1), 'old_sound_rabbit_mq.channel.publisher_confirms_producer');
+        $this->assertEquals(array(
+                array(
+                    'setExchangeOptions',
+                    array(
+                        array(
+                            'name' => '',
+                            'type' => 'direct',
+                            'passive' => true,
+                            'declare' => false
+                        )
+                    )
+                ),
+                array(
+                    'setQueueOptions',
+                    array(
+                        array(
+                            'name' => '',
+                            'declare' => false
+                        )
+                    )
+                ),
+                array(
+                    'setPublisherConfirmsTimeout',
+                    array(
+                        42
+                    )
+                )
+            ),
+            $definition->getMethodCalls()
+        );
     }
 
     public function testFooConsumerDefinition()

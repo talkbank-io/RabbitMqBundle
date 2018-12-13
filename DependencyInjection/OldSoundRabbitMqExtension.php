@@ -139,7 +139,17 @@ class OldSoundRabbitMqExtension extends Extension
     {
         if ($this->config['sandbox'] == false) {
             foreach ($this->config['producers'] as $key => $producer) {
-                $definition = new Definition($producer['class']);
+                if (empty($producer['class'])) {
+                    if ($producer['publisher_confirms']) {
+                        $producerClass = '%old_sound_rabbit_mq.publisher_confirms_producer.class%';
+                    } else {
+                        $producerClass = '%old_sound_rabbit_mq.producer.class%';
+                    }
+                } else {
+                    $producerClass = $producer['class'];
+                }
+
+                $definition = new Definition($producerClass);
                 $definition->setPublic(true);
                 $definition->addTag('old_sound_rabbit_mq.base_amqp');
                 $definition->addTag('old_sound_rabbit_mq.producer');
@@ -163,6 +173,15 @@ class OldSoundRabbitMqExtension extends Extension
 
                 if ($producer['enable_logger']) {
                     $this->injectLogger($definition);
+                }
+
+                if ($producer['publisher_confirms']) {
+                    $definition->addMethodCall(
+                        'setPublisherConfirmsTimeout',
+                        array(
+                            $producer['publisher_confirms_timeout']
+                        )
+                    );
                 }
 
                 $producerServiceName = sprintf('old_sound_rabbit_mq.%s_producer', $key);
