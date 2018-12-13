@@ -1,4 +1,7 @@
-- 2017-01-22
+ - 2018-
+    * add path with publish confirmation
+
+ - 2017-01-22
     * Add `graceful_max_execution_timeout`
 
 - 2015-02-07
