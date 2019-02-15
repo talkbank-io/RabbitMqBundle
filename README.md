@@ -1,3 +1,26 @@
+# Patched version #
+
+This is version with confirmations
+
+
+```json
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/talkbank-io/rabbitmq-bundle"
+        }
+    ],
+    "require": {
+        "php-amqplib/rabbitmq-bundle": "dev-master",
+```
+
+```yaml
+    producers:
+        some_producer:
+            publisher_confirms: true
+            publisher_confirms_timeout: 2
+```
+
 # RabbitMqBundle #
 
 [![Join the chat at https://gitter.im/php-amqplib/RabbitMqBundle](https://badges.gitter.im/php-amqplib/RabbitMqBundle.svg)](https://gitter.im/php-amqplib/RabbitMqBundle?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
