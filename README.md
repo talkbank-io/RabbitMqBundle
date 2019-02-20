@@ -1,6 +1,6 @@
 # Patched version #
 
-This is version with confirmations
+This is a version with confirmations
 
 
 ```json
