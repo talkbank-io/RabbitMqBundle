@@ -11,7 +11,7 @@ This is a version with confirmations
         }
     ],
     "require": {
-        "php-amqplib/rabbitmq-bundle": "dev-master",
+        "talkbank/rabbitmq-bundle": "dev-master",
 ```
 
 ```yaml
