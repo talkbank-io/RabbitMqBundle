@@ -30,9 +30,8 @@ class Configuration implements ConfigurationInterface
 
     public function getConfigTreeBuilder()
     {
-        $tree = new TreeBuilder();
-
-        $rootNode = $tree->root($this->name);
+        $tree = new TreeBuilder($this->name);
+        $rootNode = \method_exists(TreeBuilder::class, 'getRootNode') ? $tree->getRootNode() : $tree->root($this->name);
 
         $rootNode
             ->children()
@@ -235,6 +234,13 @@ class Configuration implements ConfigurationInterface
                             ->scalarNode('callback')->isRequired()->end()
                             ->scalarNode('idle_timeout')->end()
                             ->scalarNode('idle_timeout_exit_code')->end()
+                            ->arrayNode('graceful_max_execution')
+                                ->canBeUnset()
+                                ->children()
+                                    ->integerNode('timeout')->end()
+                                    ->integerNode('exit_code')->defaultValue(0)->end()
+                                ->end()
+                            ->end()
                             ->scalarNode('auto_setup_fabric')->defaultTrue()->end()
                             ->arrayNode('qos_options')
                                 ->canBeUnset()
