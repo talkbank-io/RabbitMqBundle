@@ -2,7 +2,6 @@
 
 This is a version with confirmations
 
-
 ```json
     "repositories": [
         {
@@ -11,7 +10,7 @@ This is a version with confirmations
         }
     ],
     "require": {
-        "talkbank/rabbitmq-bundle": "dev-master",
+        "talkbank/rabbitmq-bundle": "^2.14.5",
 ```
 
 ```yaml
