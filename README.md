@@ -1,6 +1,6 @@
 # Patched version #
 
-This is a version with confirmations
+This is a version with: confirmations, acknowledgment after replay for rpc-servers
 
 ```json
     "repositories": [
